@@ -5,11 +5,13 @@ import {
     taostStopLoading, 
     toastLoading, 
   } from "../helper/ToastNotify";
+import { logoutSuccess } from "../features/authSlice";
+import { useNavigate } from "react-router-dom";
  
 const useStockRequest = () => {
     const {axiosToken} = useAxios();
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
 
     const getDataApi = async (path) => {
         const idLoading = toastLoading(`Getting the ${path}...` );
@@ -25,6 +27,7 @@ const useStockRequest = () => {
 
             dispatch(fetchStockFail())
             console.log(error);
+            autoLogout(error,dispatch,navigate);
             
         }
     }
@@ -44,7 +47,7 @@ const useStockRequest = () => {
 
             dispatch(fetchStockFail())
             console.log(error);
-            
+            autoLogout(error,dispatch,navigate);
         }
     }
     const postNewDataApi = async (path,firmData) => { 
@@ -62,7 +65,7 @@ const useStockRequest = () => {
             // toastErrorNotify("Error! The New Firm couldn't be added !");
             dispatch(fetchStockFail())
             console.log(error);
-            
+            autoLogout(error,dispatch,navigate);
         }
     }
     const putEditApi = async (path,id,firmData) => {
@@ -82,7 +85,7 @@ const useStockRequest = () => {
 
             dispatch(fetchStockFail())
             console.log(error);
-            
+            autoLogout(error,dispatch,navigate);
         }
     }
 
@@ -108,6 +111,7 @@ const useStockRequest = () => {
 
             dispatch(fetchStockFail())
             console.log(error);
+            autoLogout(error,dispatch,navigate);
             
         }
     }
@@ -115,3 +119,11 @@ const useStockRequest = () => {
 }
 
 export default useStockRequest
+
+
+const autoLogout = (error,dispatch,navigate) => {
+    if(error?.response?.status === 403){
+        dispatch(logoutSuccess());
+        navigate('/')
+    }
+}
