@@ -5,22 +5,22 @@
 <br />
 <div align="center">
    
-  <a href="https://github.com/ibrsec/redux-toolkit-mp3dowloader/">
+  <a href="https://github.com/ibrsec/stockapp-fullstack-render/tree/main/client">
     <img src="./public/logo.png" alt="Logo" width="250"   >
   </a>
 
-  <h3 align="center">Stock App</h3>
+  <h3 align="center">Front end of the Full stack Stock App</h3>
 
   <p align="center">
     An awesome Stock App
-    <a href="https://github.com/ibrsec/stock-app"><strong>Explore the docs »</strong></a>
+    <!-- <a href="https://github.com/ibrsec/stock-app"><strong>Explore the docs »</strong></a> -->
     <br />
     <br />
-    <a href="https://ultra-stock-app.vercel.app/">View Demo</a>
+    <a href="https://stockapp-fullstack-render.onrender.com/">View Demo</a>
     ·
-    <a href="https://github.com/ibrsec/stock-app/issues">Report Bug</a>
+    <a href="https://github.com/ibrsec/stockapp-fullstack-render/issues">Report Bug</a>
     ·
-    <a href="https://github.com/ibrsec/stock-app/issues">Request Feature</a>
+    <a href="https://github.com/ibrsec/stockapp-fullstack-render/issues">Request Feature</a>
   </p>
 </div>
 
@@ -64,7 +64,7 @@
 <a name="about-the-project"></a>
 ## ℹ️ About The Project
 
-[![stock-app](./public/project.gif)](https://ultra-stock-app.vercel.app/)
+[![stock-app](./public/project.gif)](https://stockapp-fullstack-render.onrender.com/)
 
 
 
@@ -87,7 +87,7 @@
 <a name="overview"></a>
 ## 👀 Overview
 
-📦 Used a ready backend for stock api </br>
+📦 Frontend of the my [stockapp-fullstack-render](https://github.com/ibrsec/stockapp-fullstack-render) project </br>
 🎯 Used React environment, redux toolkit,redux-persist,react-routing,material mui-x-datagrid, mui-x-charts ,axios,formik, yup, toastify, </br>
 🖥 You can Register or login with the ready credentials on the login page, Contents can be accessed after logging in! </br>
 🔩 After login there is  a few page like dashboard,products,sales,purchases,firms,brands</br>
@@ -107,16 +107,20 @@ They can be edited, deleted, and new records can be added. You can also make edi
 
 ```sh
 # clone the project
-git clone https://github.com/ibrsec/stock-app.git
+git clone https://github.com/ibrsec/stockapp-fullstack-render.git
 
 # enter the project directory
-cd stock-app
+cd stockapp-fullstack-render
 
 # install dependency
-npm install || yarn install
+# linux
+npm run setup-production
+# windows
+npm run setup-production-windows
 
-# develop
-npm run dev || yarn start
+# run
+node index.js
+
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -159,7 +163,7 @@ stock-app  (folder)
   |     |     |---PrivateRoute.jsx  
   |     |     └---AppRouter.jsx       
   |     |          
-  |     |---router (folder)        
+  |     |---services (folder)        
   |     |     |---useAxios.jsx  
   |     |     |---useApiRequests.jsx  
   |     |     └---useStockRequest.jsx       

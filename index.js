@@ -13,7 +13,6 @@ const path = require("path");
 const userDataSync = require("./src/helpers/userDataSync");
 const adminUser = require("./src/helpers/adminUser");
 
-
 /* ------------------------------- Express app ------------------------------ */
 const app = express();
 const PORT = process.env.PORT;
@@ -45,7 +44,11 @@ app.use(queryHandler);
 app.all("/api/v1", (req, res) => {
   res.json({
     message: "Welcome to Stock api!",
-    documents: ["/api/v1/documents/json", "/api/v1/documents/swagger", "/api/v1/documents/redoc"],
+    documents: [
+      "/api/v1/documents/json",
+      "/api/v1/documents/swagger",
+      "/api/v1/documents/redoc",
+    ],
     user: req.user,
   });
 });
@@ -59,13 +62,14 @@ app.use(
   express.static(path.join(__dirname, "node_modules", "swagger-ui-dist"))
 );
 
+
+//frontend static
 app.get("/", (req, res) => {
   /*
   #swagger.ignore = true 
 */
   res.sendFile(path.resolve(__dirname, "./public", "index.html"));
 });
-
 
 //not found route
 app.use("*", (req, res) => {
@@ -82,12 +86,8 @@ app.listen(PORT, () => console.log("Server is running on:", PORT));
 // clean and add user data
 // userDataSync()
 
-
-
 // const { Token } = require("./src/models/tokenModel");
 // Token.deleteMany().then(()=>console.log('object'))
-
-
 
 //productsa quantityyi unutmusuz
 //  onu ekle ve  purcahse 'e devam et.!!!!

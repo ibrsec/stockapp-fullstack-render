@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "node swaggerAutogen.js && nodemon",
     "start": "nodemon ",
-    "setup-production": "npm i && cd client && npm i && npm run build && npm run move-linux"
+    "setup-production": "npm i && cd client && npm i && npm run build && npm run move-linux",
+    "setup-production-windows": "npm i && cd client && npm i && npm run build && npm run move-windows"
   },
   "keywords": [],
   "author": "ibrsec",
