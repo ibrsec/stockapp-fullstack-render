@@ -28,6 +28,7 @@ const useStockRequest = () => {
             dispatch(fetchStockFail())
             console.log(error);
             if(error?.response?.status === 403){
+                console.log("403 hata alındı, yönlendiriliyor...");
                 dispatch(logoutSuccess());
                 navigate('/')
             }
@@ -51,6 +52,8 @@ const useStockRequest = () => {
             dispatch(fetchStockFail())
             console.log(error);
             if(error?.response?.status === 403){
+                console.log("403 hata alındı, yönlendiriliyor...");
+                
                 dispatch(logoutSuccess());
                 navigate('/')
             }
@@ -72,6 +75,7 @@ const useStockRequest = () => {
             dispatch(fetchStockFail())
             console.log(error);
             if(error?.response?.status === 403){
+                console.log("403 hata alındı, yönlendiriliyor...");
                 dispatch(logoutSuccess());
                 navigate('/')
             }
@@ -95,6 +99,7 @@ const useStockRequest = () => {
             dispatch(fetchStockFail())
             console.log(error);
             if(error?.response?.status === 403){
+                console.log("403 hata alındı, yönlendiriliyor...");
                 dispatch(logoutSuccess());
                 navigate('/')
             }
@@ -124,6 +129,7 @@ const useStockRequest = () => {
             dispatch(fetchStockFail())
             console.log(error);
             if(error?.response?.status === 403){
+                console.log("403 hata alındı, yönlendiriliyor...");
                 dispatch(logoutSuccess());
                 navigate('/')
             }
