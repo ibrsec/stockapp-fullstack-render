@@ -95,7 +95,7 @@
 ## 👀 Overview
 
 📦 A Fullstack Stock App Project</br>
-🏀 [Frontend Live](https://github.com/ibrsec/stockapp-fullstack-render) || [Backend Swagger](https://github.com/ibrsec/stockapp-fullstack-render/api/v1/documents/swagger) || [Backend Redoc](https://github.com/ibrsec/stockapp-fullstack-render/api/v1/documents/redoc)</br>
+🏀 [Frontend Live](https://github.com/ibrsec/stockapp-fullstack-render) || [Backend Swagger](https://github.com/ibrsec/stockapp-fullstack-render/api/v1/documents/swagger) || [Backend Redoc](https://github.com/ibrsec/stockapp-fullstack-render/api/v1/documents/redoc)</br></br>
 FRONTEND:</br>
 🎯 <b>React Development:</b> Built a responsive frontend with React.js, delivering a seamless user experience.</br>
 
@@ -114,7 +114,7 @@ FRONTEND:</br>
 🃏 <b>Card Layouts:</b> Designed intuitive card-based interfaces for managing firms and brands.</br>
 
 📊 <b>Data Tables:</b> Organized stock information in editable tables for easy data management.
-</br>
+</br></br>
 BACKEND:</br>
 <b>🎯 Express.js Framework:</b> Developed a robust RESTful API with Express.js for secure and efficient stock data management.
 
