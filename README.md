@@ -20,7 +20,9 @@
     ·
     <a href="https://github.com/ibrsec/stockapp-fullstack-render/tree/main/client">Frontend Repo</a>
     ·
-    <a href="https://github.com/ibrsec/stockapp-fullstack-render/api/v1/documents/swagger">Backend Swagger</a>
+    <a href="https://stockapp-fullstack-render.onrender.com/api/v1/documents/swagger">Backend Swagger</a>
+    ·
+    <a href="https://stockapp-fullstack-render.onrender.com/api/v1/documents/redoc">Backend Redoc</a>
     ·
     <a href="https://github.com/ibrsec/stockapp-fullstack-render/issues">Report Bug</a>
     ·
@@ -173,7 +175,7 @@ node index.js
 ## 📂 Directory structure 
 
 ```diff
-+ personnel_app-backend  (folder)  
++ stockapp-fullstack-render  (folder)  
       |---client (folder)   
       |      |          
       |      |---public (folder) 
@@ -300,8 +302,8 @@ node index.js
  <img src="https://img.shields.io/badge/Express.js-404D59?style=for-the-badge"> 
  <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white"> 
  <img src="https://img.shields.io/badge/Mongoose-4EA94B?style=for-the-badge&logo=mongoose&logoColor=white"> 
- <!-- <img src="https://img.shields.io/badge/json%20web%20tokens-323330?style=for-the-badge&logo=json-web-tokens&logoColor=pink">  -->
- <img src="https://img.shields.io/badge/Token%20authentication-000000?style=for-the-badge&logo=token&logoColor=white"> 
+ <img src="https://img.shields.io/badge/jwt%20token-323330?style=for-the-badge&logo=json-web-tokens&logoColor=pink"> 
+ <img src="https://img.shields.io/badge/Token%20authentication-000000?style=for-the-badge&logo=token&logoColor=white">  
 
 <!-- swagger -->
  <img src="https://img.shields.io/badge/Swagger%20Autogen-4EA94B?style=for-the-badge&logo=swagger&logoColor=white"> 
