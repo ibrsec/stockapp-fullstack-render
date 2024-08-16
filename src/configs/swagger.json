@@ -1,0 +1,3579 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "backend-stockapi",
+    "description": "Backend of the stock app",
+    "termsOfService": "https://www.ibrsec.com",
+    "license": {
+      "name": "ISC"
+    },
+    "contact": {
+      "name": "ibrsec",
+      "email": "ibr.seckin@gmail.com"
+    }
+  },
+  "host": "backend-stockapi-express.vercel.app",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "securityDefinitions": {
+    "Token": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": " Simple token authentication *  example: <b>Token ...tokenkey...</b>"
+    },
+    "Bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Jwt token authentication *  example : <b>Bearer ...jwt tokenkey...</b>"
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/users/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "List Users",
+        "description": "  List all users!</br></br>  <b>Permission= Loginned user</b></br>   - Normal users can't list staff or admin users</br>  - Staff users can't list admin users</br></br>  Token endpoint is hidden </br></br>  You can send query with endpoint for filter[],search[], sort[], page and limit.  <ul> Examples:   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>   <li>URL/?<b>page=2&limit=1</b></li>  </ul>  ",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create new User",
+        "description": "  create a new user!</br></br>  <b>Permission= No Permission</b></br>   - Admin or staff or in-active users can be create.d just by admin users</br></br>  - Password type Rules- [lenght:8-16, at least: 1 upper, 1 lower, 1 number, 1 special[@$!%*?&]]</br>  - Email type Rules- --@--.--</br>  - Required fields: - username, email, password, firstName, lastName</br>  ",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "testuser"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "testuser@email.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Password1*"
+                },
+                "firstName": {
+                  "type": "string",
+                  "example": "firstname"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "lastname"
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "isAdmin": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "isStaff": {
+                  "type": "boolean",
+                  "example": false
+                }
+              },
+              "required": [
+                "username",
+                "email",
+                "password",
+                "firstName",
+                "lastName"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "A new user is created!!"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "tokenkey"
+                },
+                "bearer": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string",
+                      "example": "accestoken key"
+                    },
+                    "refreshToken": {
+                      "type": "string",
+                      "example": "refreshtoken key"
+                    }
+                  }
+                },
+                "data": {
+                  "$ref": "#/definitions/User"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - username,email,password, firstName, lastName fields are required!"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a user",
+        "description": "  Get a user by id!!</br></br>  <b>Permission= Loginned user</b></br>   - Admin can list all users!</br>  - Staff user can list all users except admin users!</br>  - Normal user can list all users except admin or staff users!</br></br>",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "testuser"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "testuser@email.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Password1*"
+                },
+                "firstName": {
+                  "type": "string",
+                  "example": "firstname"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "lastname"
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "isAdmin": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "isStaff": {
+                  "type": "boolean",
+                  "example": false
+                }
+              }
+            },
+            "description": "One field is enough!"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully found!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User is found!"
+                },
+                "data": {
+                  "$ref": "#/definitions/User"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "202": {
+            "description": "Successfully partiqally updated!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User is partially updated!!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/User"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "204": {
+            "description": "Successfully deleted!"
+          },
+          "400": {
+            "description": "Bad request - Invalid id type(ObjectId)!"
+          },
+          "404": {
+            "description": "Not found - User not found!"
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update a User",
+        "description": "  Update a User by id!</br></br>  <b>Permission= Normal user</b></br>   - Admin users can be update.d just by admin users</br>   - Other users can update theirselves</br>  - Admin, staff or active modifications are accessible for just the admin users!</br> </br>  - Password type Rules- [lenght:8-16, at least: 1 upper, 1 lower, 1 number, 1 special[@$!%*?&]]</br>  - Email type Rules- --@--.--</br>  - Required fields: - username,email,password</br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "testuser"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "testuser@email.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Password1*"
+                },
+                "firstName": {
+                  "type": "string",
+                  "example": "firstname"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "lastname"
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "isAdmin": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "isStaff": {
+                  "type": "boolean",
+                  "example": false
+                }
+              },
+              "required": [
+                "username",
+                "email",
+                "password",
+                "firstName",
+                "lastName"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User is  !!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/User"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request    </br>- Invalid id type(ObjectId)!   </br>- username, email, password, firstName, lastName fields are required!   </br>- non-admin users can't modify other users!   "
+          },
+          "404": {
+            "description": "Not found - User not found!"
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete a user",
+        "description": "  Delete a user by id!!</br></br>  <b>Permission= Admin user</b></br>   - Admin can delete all users!</br>  - Other users can't delete any user!</br>",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted!"
+          },
+          "400": {
+            "description": "Bad request - Invalid id type(ObjectId)!"
+          },
+          "404": {
+            "description": "Not found - User not found!"
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Partial Update",
+        "description": "  Partial Update a User by id!</br></br>  <b>Permission= Normal user</b></br>   - Admin users can be update.d just by admin users</br>  - Other users can update theirselves</br>  - Admin, staff or active modifications are accessible for just the admin users!</br> </br>  - Password type Rules- [lenght:8-16, at least: 1 upper, 1 lower, 1 number, 1 special[@$!%*?&]]</br>  - Email type Rules- --@--.--</br>  - Required fields: - Aat least one of the username, email, password, firstName, lastName, isActive, isAdmin, isStaff fields is required!</br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "One field is enough!",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "testuser"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "testuser@email.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Password1*"
+                },
+                "firstName": {
+                  "type": "string",
+                  "example": "firstname"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "lastname"
+                },
+                "isActive": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "isAdmin": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "isStaff": {
+                  "type": "boolean",
+                  "example": false
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successfully partiqally updated!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "User is partially updated!!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/User"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request    </br>- Invalid id type(ObjectId)!   </br>- At least one field of username, email, password, firstName, lastName,isActive,isAdmin,isStaff fields is required!   </br>- non-admin users can't modify other users!      "
+          },
+          "404": {
+            "description": "Not found - User not found!"
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Login",
+        "description": "  Login with username/email and password!</br></br>  <b>Permission= No Permission</b></br></br>  - Password type Rules- [lenght:8-16, at least: 1 upper, 1 lower, 1 number, 1 special[@$!%*?&]]</br>  - Email type Rules- --@--.--</br>  - Required fields: - username or email,password</br>  ",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "username"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "email@email.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Password1*"
+                }
+              },
+              "required": [
+                "username",
+                "email",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully Logined!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Login is OK!"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "tokenkey"
+                },
+                "bearer": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string",
+                      "example": "access token"
+                    },
+                    "refreshToken": {
+                      "type": "string",
+                      "example": "refresh token"
+                    }
+                  }
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "66362c828c9af95390f5aae5"
+                    },
+                    "username": {
+                      "type": "string",
+                      "example": "testba"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "f1dffdee8d0642d170e697331929a7250aedca4ad508f4d1f9986dbdb888c5fc"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "testba@test.com"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "example": "testba"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "batest"
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "isStaff": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "isAdmin": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024-05-04T12:39:30.473Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024-05-04T12:39:30.473Z"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - email or username and password fields are required!"
+          },
+          "401": {
+            "description": "Unauthorized:    </br>- User not found!   </br>- Your account is not active - please contact with support!   </br>- Invalid password!   "
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Refresh token",
+        "description": "  Refresh the access token with refresh token!</br></br>   <b>Permission= No Permission</b></br></br>  - Required fields: - bearer. refresh Token</br>  ",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "bearer": {
+                  "type": "object",
+                  "properties": {
+                    "refresh Token": {
+                      "type": "string",
+                      "example": "...refresh token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Access token is  !!"
+                },
+                "result": {
+                  "type": "object",
+                  "properties": {
+                    "bearer": {
+                      "type": "object",
+                      "properties": {
+                        "accessToken": {
+                          "type": "string",
+                          "example": "access token"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - bearer.refreshToken is a required field!"
+          },
+          "401": {
+            "description": "Unauthorized:    </br>- Unauhtorized - Invalid signature - invalid token or token is expired!!   </br>- Unauhtorized - Your account is not active - please contact with support!!!   </br>- User not found!   </br>- Invalid password!   "
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Logout",
+        "description": "  Logout with with token or with out token!</br></br>  <b>Permission= No Permission</b></br></br>  ",
+        "responses": {
+          "200": {
+            "description": "Successfully Logged out!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Logout is OK!"
+                },
+                "result": {
+                  "type": "object",
+                  "properties": {
+                    "deletedToken": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/firms/": {
+      "get": {
+        "tags": [
+          "Firms"
+        ],
+        "summary": "List Firms",
+        "description": "  List all firms!</br></br>  <b>Permission= Loginned user</b></br></br>  You can send query with endpoint for filter[],search[], sort[], page and limit.  <ul> Examples:   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>   <li>URL/?<b>page=2&limit=1</b></li>  </ul>  ",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Firms"
+        ],
+        "summary": "Create new firm",
+        "description": "  Create a new firm!</br></br>  <b>Permission= Loginned User</b></br>   - Firm name should have a unique value</br>  - name field Max Length:100</br>  - Phone field: String, Max Length:11, [0-9]</br>  - address field Max Length:200</br>  - Image field Max length : 1000, should match: http:// or https://</br> </br>  ",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "newFirmName"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "99911122233"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "23 st. no:2 City"
+                },
+                "image": {
+                  "type": "string",
+                  "example": "https://exampleImageUurl.com"
+                }
+              },
+              "required": [
+                "name",
+                "phone",
+                "address",
+                "image"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "A new firm is created!!"
+                },
+                "data": {
+                  "$ref": "#/definitions/Firm"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - name, phone, address, image fields are required!"
+          }
+        }
+      }
+    },
+    "/firms/{id}": {
+      "get": {
+        "tags": [
+          "Firms"
+        ],
+        "summary": "Get a firm",
+        "description": "  Get a firm by id!</br></br>  <b>Permission= Loginned User</b></br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully Found!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Firm is found!!"
+                },
+                "data": {
+                  "$ref": "#/definitions/Firm"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found - Firm not found!    "
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Firms"
+        ],
+        "summary": "Update firm",
+        "description": "  Update a new firm by id!</br></br>  <b>Permission= Loginned User</b></br>   - Firm name should have a unique value</br>  - name field Max Length:100</br>  - Phone field: String, Max Length:11, [0-9]</br>  - address field Max Length:200</br>  - Image field Max length : 1000, should match: http:// or https://</br> </br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "newFirmName"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "99911122233"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "23 st. no:2 City"
+                },
+                "image": {
+                  "type": "string",
+                  "example": "https://exampleImageUurl.com"
+                }
+              },
+              "required": [
+                "name",
+                "phone",
+                "address",
+                "image"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "firm is  !!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/Firm"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad request:    </br>- name, phone, address, image fields are required!   </br>- Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found:    </br>- Firm not found!    "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Firms"
+        ],
+        "summary": "Delete a firm",
+        "description": "  Delete a firm by id!</br></br>  <b>Permission= Loginned User</b></br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully Deleted!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Firm is deleted!!"
+                },
+                "result": {
+                  "$ref": "#/definitions/Firm"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad request - Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found - Firm not found!    "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Firms"
+        ],
+        "summary": "Partially Update firm",
+        "description": "  Partially Update a new firm by id!</br></br>  <b>Permission= Loginned User</b></br>   - Firm name should have a unique value</br>  - name field Max Length:100</br>  - Phone field: String, Max Length:11, [0-9]</br>  - address field Max Length:200</br>  - Image field Max length : 1000, should match: http:// or https://</br> </br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "At least one of the name, phone, address, image field is required!",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "firmName"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "99911122233"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "23 st. no:2 City"
+                },
+                "image": {
+                  "type": "string",
+                  "example": "https://exampleImageUurl.com"
+                }
+              },
+              "required": [
+                "name",
+                "phone",
+                "address",
+                "image"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully partially updated!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Firm is partially updated!!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/Firm"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad request:    </br>- At least one of the name, phone, address, image field is required!   </br>- Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found:    </br>- Firm not found!    "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      }
+    },
+    "/categories/": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "List Categories",
+        "description": "  List all categories!</br></br>  <b>Permission= Loginned user</b></br></br>  You can send query with endpoint for filter[],search[], sort[], page and limit.  <ul> Examples:   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>   <li>URL/?<b>page=2&limit=1</b></li>  </ul>  ",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Create new category",
+        "description": "  Create a new category!</br></br>  <b>Permission= Loginned User</b></br>   - Category name should have a unique value</br>  - name field Max Length:100</br></br>  ",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "newCategoryName"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "A new category is created!!"
+                },
+                "data": {
+                  "$ref": "#/definitions/Category"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - name field is required!"
+          }
+        }
+      }
+    },
+    "/categories/{id}": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Get a category",
+        "description": "  Get a category by id!</br></br>  <b>Permission= Loginned User</b></br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully Found!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Category is found!!"
+                },
+                "data": {
+                  "$ref": "#/definitions/Category"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found - Category not found!    "
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Update category",
+        "description": "  Update a new category by id!</br></br>  <b>Permission= Loginned User</b></br>   - Category name should have a unique value</br>  - name field Max Length:100</br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "newCategoryName"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Category is  !!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/Category"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad request:    </br>- name field is required!   </br>- Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found:    </br>- Category not found!    "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Delete a category",
+        "description": "  Delete a category by id!</br></br>  <b>Permission= Loginned User</b></br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully Deleted!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Category is deleted!!"
+                },
+                "result": {
+                  "$ref": "#/definitions/Category"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad request - Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found - Category not found!    "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Partially Update category",
+        "description": "  Partially Update a new category by id!</br></br>  <b>Permission= Loginned User</b></br>   - Category name should have a unique value</br>  - name field Max Length:100</br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "At least one of the name, phone, address, image field is required!",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "categoryName"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully partially updated!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Category is partially updated!!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/Category"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad request:    </br>- name field is required!   </br>- Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found:    </br>- Category not found!    "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      }
+    },
+    "/brands/": {
+      "get": {
+        "tags": [
+          "Brands"
+        ],
+        "summary": "List Brands",
+        "description": "  List all brands!</br></br>  <b>Permission= Loginned user</b></br></br>  You can send query with endpoint for filter[],search[], sort[], page and limit.  <ul> Examples:   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>   <li>URL/?<b>page=2&limit=1</b></li>  </ul>  ",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Brands"
+        ],
+        "summary": "Create new brand",
+        "description": "  Create a new brand!</br></br>  <b>Permission= Loginned User</b></br>   - Brand name should have a unique value</br>  - name field Max Length:100</br>  - Image field Max length : 1000, should match: http:// or https://</br> </br>  ",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "newBrandName"
+                },
+                "image": {
+                  "type": "string",
+                  "example": "https://imageUrlExample.com"
+                }
+              },
+              "required": [
+                "name",
+                "image"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "A new brand is created!!"
+                },
+                "data": {
+                  "$ref": "#/definitions/Brand"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - name, image fields are required!"
+          }
+        }
+      }
+    },
+    "/brands/{id}": {
+      "get": {
+        "tags": [
+          "Brands"
+        ],
+        "summary": "Get a brand",
+        "description": "  Get a brand by id!</br></br>  <b>Permission= Loginned User</b></br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully Found!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Brand is found!!"
+                },
+                "data": {
+                  "$ref": "#/definitions/Brand"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found - Brand not found!    "
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Brands"
+        ],
+        "summary": "Update brand",
+        "description": "  Update a new brand by id!</br></br>  <b>Permission= Loginned User</b></br>   - Brand name should have a unique value</br>  - name field Max Length:100</br>  - Image field Max length : 1000, should match: http:// or https://</br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "newBrandName"
+                },
+                "image": {
+                  "type": "string",
+                  "example": "https://brandImageUrlexample.com"
+                }
+              },
+              "required": [
+                "name",
+                "image"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Brand is  !!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/Brand"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad request:    </br>- name and image fields are required!   </br>- Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found:    </br>- Brand not found!    "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Brands"
+        ],
+        "summary": "Delete a brand",
+        "description": "  Delete a brand by id!</br></br>  <b>Permission= Loginned User</b></br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully Deleted!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Brand is deleted!!"
+                },
+                "result": {
+                  "$ref": "#/definitions/Brand"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad request - Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found - Brand not found!    "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Brands"
+        ],
+        "summary": "Partially Update brand",
+        "description": "  Partially Update a new brand by id!</br></br>  <b>Permission= Loginned User</b></br>   - Brand name should have a unique value</br>  - name field Max Length:100</br>  - Image field Max length : 1000, should match: http:// or https://</br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "At least one of the name, image field is required!",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "brandName"
+                },
+                "image": {
+                  "type": "string",
+                  "example": "https://brandImageUrlexample.com"
+                }
+              },
+              "required": [
+                "name",
+                "image"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully partially updated!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Brand is partially updated!!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/Brand"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad request:    </br>- name or image field is required!   </br>- Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found:    </br>- Brand not found!    "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      }
+    },
+    "/products/": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "List Products",
+        "description": "  List all products!</br></br>  <b>Permission= Loginned user</b></br></br>  You can send query with endpoint for filter[],search[], sort[], page and limit.  <ul> Examples:   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>   <li>URL/?<b>page=2&limit=1</b></li>  </ul>  ",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Create new product",
+        "description": "  Create a new product!</br></br>  <b>Permission= Loginned User</b></br>   - name field Max Length:100</br>  - categoryId should exist on categories</br>  - brandId should exist on brands</br>   </br>  ",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "newProductName"
+                },
+                "categoryId": {
+                  "type": "string",
+                  "example": "66b9fddcc29ab216e263b04f"
+                },
+                "brandId": {
+                  "type": "string",
+                  "example": "66b9f845453a084e04ef28ff"
+                }
+              },
+              "required": [
+                "name",
+                "categoryId",
+                "brandId"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "A new product is created!!"
+                },
+                "data": {
+                  "$ref": "#/definitions/Product"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request:   </br> - name, categoryId, brandId fields are required!   </br> - Invalid categoryId, brandId type(ObjectId)!   "
+          },
+          "404": {
+            "description": "Not found:   </br> - Category not found on categories!   </br> - Brand not found on brands!   "
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Get a product",
+        "description": "  Get a product by id!</br></br>  <b>Permission= Loginned User</b></br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully Found!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Product is found!!"
+                },
+                "data": {
+                  "$ref": "#/definitions/Product"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found - Product not found!    "
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Update product",
+        "description": "  Update a new product by id!</br></br>  <b>Permission= Loginned User</b></br>   - Product name should have a unique value</br>  - name field Max Length:100</br>  - categoryId should exist on categories</br>  - brandId should exist on brands</br>   </br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "newProductName"
+                },
+                "categoryId": {
+                  "type": "string",
+                  "example": "66b9fddcc29ab216e263b04f"
+                },
+                "brandId": {
+                  "type": "string",
+                  "example": "66b9f845453a084e04ef28ff"
+                }
+              },
+              "required": [
+                "name",
+                "categoryId",
+                "brandId"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Product is  !!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/Product"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad request:    </br>- name, categoryId, brandId fields are required!   </br> - Invalid param id, categoryId, brandId type(ObjectId)!   "
+          },
+          "404": {
+            "description": "Not found:    </br>- Product not found!    </br> - Category not found on categories!   </br> - Brand not found on brands!   "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Delete a product",
+        "description": "  Delete a product by id!</br></br>  <b>Permission= Loginned User</b></br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully Deleted!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Product is deleted!!"
+                },
+                "result": {
+                  "$ref": "#/definitions/Product"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad request - Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found - Product not found!    "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "Partially Update product",
+        "description": "  Partially Update a new product by id!</br></br>  <b>Permission= Loginned User</b></br>   - Product name should have a unique value</br>  - name field Max Length:100</br>  - categoryId should exist on categories</br>  - brandId should exist on brands</br>   </br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "At least one of the name, categoryId, brandId field is required!",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "newProductName"
+                },
+                "categoryId": {
+                  "type": "string",
+                  "example": "66b9fddcc29ab216e263b04f"
+                },
+                "brandId": {
+                  "type": "string",
+                  "example": "66b9f845453a084e04ef28ff"
+                }
+              },
+              "required": [
+                "name",
+                "categoryId",
+                "brandId"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully partially updated!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Product is partially updated!!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/Product"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad request:    </br>- name or categoryId or brandId field is required!   </br>- Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found:    </br>- Product not found!    "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      }
+    },
+    "/purchases/": {
+      "get": {
+        "tags": [
+          "Purchases"
+        ],
+        "summary": "List Purchases",
+        "description": "  List all purchases!</br></br>  <b>Permission= Loginned user</b></br></br>  You can send query with endpoint for filter[],search[], sort[], page and limit.  <ul> Examples:   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>   <li>URL/?<b>page=2&limit=1</b></li>  </ul>  ",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Purchases"
+        ],
+        "summary": "Create new purchase",
+        "description": "  Create a new purchase!</br></br>  <b>Permission= Loginned User</b></br>   - productId should exist on products</br>   - firmId should exist on firms</br>   </br>  ",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "example": "66b9fddcc29ab216e263b04f"
+                },
+                "firmId": {
+                  "type": "string",
+                  "example": "66b9fddcc29ab216e263b04f"
+                },
+                "quantity": {
+                  "type": "number",
+                  "example": 150
+                },
+                "price": {
+                  "type": "number",
+                  "example": 50
+                }
+              },
+              "required": [
+                "productId",
+                "firmId",
+                "quantity",
+                "price"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "A new purchase is created!!"
+                },
+                "data": {
+                  "$ref": "#/definitions/Purchase"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request:   </br> - productId, firmId, price, quantity fields are required!   </br> - Invalid brandId, firmId, userId, productId type(ObjectId)!   </br> - Invalid quantity - it can't be less than 1!   "
+          },
+          "404": {
+            "description": "Not found:   </br> - Product not found on products!   </br> - Brand not found on brands!   </br> - Firm not found on brands!   </br> - User not found on brands!   "
+          }
+        }
+      }
+    },
+    "/purchases/{id}": {
+      "get": {
+        "tags": [
+          "Purchases"
+        ],
+        "summary": "Get a purchase",
+        "description": "  Get a purchase by id!</br></br>  <b>Permission= Loginned User</b></br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully Found!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Purchase is found!!"
+                },
+                "data": {
+                  "$ref": "#/definitions/Purchase"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found - Purchase not found!    "
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Purchases"
+        ],
+        "summary": "Update purchase",
+        "description": "  Update a new purchase by id!</br></br>  <b>Permission= Loginned User</b></br>   - productId should exist on products</br>  - firmId should exist on firms</br>   </br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "example": "66b9fddcc29ab216e263b04f"
+                },
+                "firmId": {
+                  "type": "string",
+                  "example": "66b9fddcc29ab216e263b04f"
+                },
+                "quantity": {
+                  "type": "number",
+                  "example": 150
+                },
+                "price": {
+                  "type": "number",
+                  "example": 50
+                }
+              },
+              "required": [
+                "productId",
+                "firmId",
+                "quantity",
+                "price"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Purchase is  !!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/Purchase"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad request:    </br>-productId, firmId, price, quantity fields are required!   </br> - Invalid param id, brandId, firmId, userId, productId type(ObjectId)!   </br> - Invalid quantity - it can't be less than 1!   "
+          },
+          "404": {
+            "description": "Not found:    </br>- Purchase not found!    </br> - Product not found on products!   </br> - Brand not found on brands!   </br> - Firm not found on brands!   </br> - User not found on brands!   "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Purchases"
+        ],
+        "summary": "Delete a purchase",
+        "description": "  Delete a purchase by id!</br></br>  <b>Permission= Loginned User</b></br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully Deleted!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Purchase is deleted!!"
+                },
+                "result": {
+                  "$ref": "#/definitions/Purchase"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad request - Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found - Purchase not found!    "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Purchases"
+        ],
+        "summary": "Partially Update purchase",
+        "description": "  Partially Update a new purchase by id!</br></br>  <b>Permission= Loginned User</b></br>   - productId should exist on products</br>   - firmId should exist on firms</br>   </br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "At least one of the productId, firmId, price, quantity field is required!",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "example": "66b9fddcc29ab216e263b04f"
+                },
+                "firmId": {
+                  "type": "string",
+                  "example": "66b9fddcc29ab216e263b04f"
+                },
+                "quantity": {
+                  "type": "number",
+                  "example": 150
+                },
+                "price": {
+                  "type": "number",
+                  "example": 50
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully partially updated!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Purchase is partially updated!!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/Purchase"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad request:    </br>- productId or firmId or price or quantity field is required!   </br>- Invalid param id, brandId, firmId, userId, productId type(ObjectId)!!   </br>- Invalid quantity - it can't be less than 1!   "
+          },
+          "404": {
+            "description": "Not found:    </br>- Purchase not found!    </br> - Product not found on products!   </br> - Brand not found on brands!   </br> - Firm not found on brands!   </br> - User not found on brands!   "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      }
+    },
+    "/sales/": {
+      "get": {
+        "tags": [
+          "Sales"
+        ],
+        "summary": "List Sales",
+        "description": "  List all sales!</br></br>  <b>Permission= Loginned user</b></br></br>  You can send query with endpoint for filter[],search[], sort[], page and limit.  <ul> Examples:   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>   <li>URL/?<b>page=2&limit=1</b></li>  </ul>  ",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Sales"
+        ],
+        "summary": "Create new sale",
+        "description": "  Create a new sale!</br></br>  <b>Permission= Loginned User</b></br>   - productId should exist on products</br>   </br>  ",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "example": "66b9fddcc29ab216e263b04f"
+                },
+                "quantity": {
+                  "type": "number",
+                  "example": 150
+                },
+                "price": {
+                  "type": "number",
+                  "example": 50
+                }
+              },
+              "required": [
+                "productId",
+                "quantity",
+                "price"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "A new sale is created!!"
+                },
+                "data": {
+                  "$ref": "#/definitions/Sale"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request:   </br> - productId, price, quantity fields are required!   </br> - Invalid brandId, userId, productId type(ObjectId)!   </br> - Invalid quantity - it can't be less than 1!   "
+          },
+          "404": {
+            "description": "Not found:   </br> - Product not found on products!   </br> - Brand not found on brands!    </br> - User not found on brands!   "
+          }
+        }
+      }
+    },
+    "/sales/{id}": {
+      "get": {
+        "tags": [
+          "Sales"
+        ],
+        "summary": "Get a sale",
+        "description": "  Get a sale by id!</br></br>  <b>Permission= Loginned User</b></br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully Found!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Sale is found!!"
+                },
+                "data": {
+                  "$ref": "#/definitions/Sale"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found - Sale not found!    "
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Sales"
+        ],
+        "summary": "Update sale",
+        "description": "  Update a new sale by id!</br></br>  <b>Permission= Loginned User</b></br>   - productId should exist on products</br>    </br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "example": "66b9fddcc29ab216e263b04f"
+                },
+                "quantity": {
+                  "type": "number",
+                  "example": 150
+                },
+                "price": {
+                  "type": "number",
+                  "example": 50
+                }
+              },
+              "required": [
+                "productId",
+                "quantity",
+                "price"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully  !",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Sale is  !!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/Sale"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad request:    </br>-productId, price, quantity fields are required!   </br> - Invalid param id, brandId, userId, productId type(ObjectId)!   </br> - Invalid quantity - it can't be less than 1!   "
+          },
+          "404": {
+            "description": "Not found:    </br>- Sale not found!    </br> - Product not found on products!   </br> - Brand not found on brands!    </br> - User not found on brands!   "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Sales"
+        ],
+        "summary": "Delete a sale",
+        "description": "  Delete a sale by id!</br></br>  <b>Permission= Loginned User</b></br></br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully Deleted!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Sale is deleted!!"
+                },
+                "result": {
+                  "$ref": "#/definitions/Sale"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad request - Invalid param id type(ObjectId)!!   "
+          },
+          "404": {
+            "description": "Not found - Sale not found!    "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Sales"
+        ],
+        "summary": "Partially Update sale",
+        "description": "  Partially Update a new sale by id!</br></br>  <b>Permission= Loginned User</b></br>   - productId should exist on products</br>    </br>  ",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "At least one of the productId, firmId, price, quantity field is required!",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "example": "66b9fddcc29ab216e263b04f"
+                },
+                "quantity": {
+                  "type": "number",
+                  "example": 150
+                },
+                "price": {
+                  "type": "number",
+                  "example": 50
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully partially updated!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Sale is partially updated!!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "modifiedCount": {
+                      "type": "number",
+                      "example": 1
+                    }
+                  }
+                },
+                "new": {
+                  "$ref": "#/definitions/Sale"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad request:    </br>- productId or price or quantity field is required!   </br>- Invalid param id, brandId, userId, productId type(ObjectId)!!   </br>- Invalid quantity - it can't be less than 1!   "
+          },
+          "404": {
+            "description": "Not found:    </br>- Sale not found!    </br> - Product not found on products!   </br> - Brand not found on brands!    </br> - User not found on brands!   "
+          },
+          "500": {
+            "description": "Something went wrong! - asked record is found, but it couldn't be updated!    "
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "unique": {
+              "type": "boolean",
+              "example": true
+            },
+            "index": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "email": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "unique": {
+              "type": "boolean",
+              "example": true
+            },
+            "index": {
+              "type": "boolean",
+              "example": true
+            },
+            "validate": {
+              "type": "array",
+              "example": [
+                null,
+                "Invalid email type, type: __@__.__"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "password": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "set": {
+              "type": "function"
+            },
+            "validate": {
+              "type": "array",
+              "example": [
+                null,
+                "Invalid password type Rules- [lenght:8-16, at least: 1 upper, 1 lower, 1 number, 1 special[@$!%*?&]]"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "firstName": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "lastName": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "isActive": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "default": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "isAdmin": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "default": {
+              "type": "boolean",
+              "example": false
+            }
+          }
+        },
+        "isStaff": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "default": {
+              "type": "boolean",
+              "example": false
+            }
+          }
+        }
+      }
+    },
+    "Token": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "User"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "unique": {
+              "type": "boolean",
+              "example": true
+            },
+            "index": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "token": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "unique": {
+              "type": "boolean",
+              "example": true
+            },
+            "index": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        }
+      }
+    },
+    "Firm": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "unique": {
+              "type": "boolean",
+              "example": true
+            },
+            "maxLength": {
+              "type": "number",
+              "example": 100
+            },
+            "set": {
+              "type": "function"
+            }
+          }
+        },
+        "phone": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "maxLength": {
+              "type": "number",
+              "example": 11
+            },
+            "match": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "1": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "maxLength": {
+              "type": "number",
+              "example": 200
+            }
+          }
+        },
+        "image": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "requried": {
+              "type": "boolean",
+              "example": true
+            },
+            "maxLength": {
+              "type": "number",
+              "example": 1000
+            },
+            "match": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "1": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "unique": {
+              "type": "boolean",
+              "example": true
+            },
+            "maxLength": {
+              "type": "number",
+              "example": 100
+            },
+            "set": {
+              "type": "function"
+            }
+          }
+        }
+      }
+    },
+    "Brand": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "unique": {
+              "type": "boolean",
+              "example": true
+            },
+            "maxLength": {
+              "type": "number",
+              "example": 100
+            },
+            "set": {
+              "type": "function"
+            }
+          }
+        },
+        "image": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "requried": {
+              "type": "boolean",
+              "example": true
+            },
+            "maxLength": {
+              "type": "number",
+              "example": 1000
+            },
+            "match": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "1": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Product": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "unique": {
+              "type": "boolean",
+              "example": true
+            },
+            "maxLength": {
+              "type": "number",
+              "example": 100
+            },
+            "set": {
+              "type": "function"
+            }
+          }
+        },
+        "quantity": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "default": {
+              "type": "number",
+              "example": 0
+            }
+          }
+        },
+        "categoryId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "Category"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "brandId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "Brand"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        }
+      }
+    },
+    "Purchase": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "User"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "firmId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "Firm"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "brandId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "Brand"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "productId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "Product"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "quantity": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "price": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "amount": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "set": {
+              "type": "function"
+            },
+            "default": {
+              "type": "function"
+            },
+            "transform": {
+              "type": "function"
+            }
+          }
+        }
+      }
+    },
+    "Sale": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "User"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "brandId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "Brand"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "productId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "Product"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "quantity": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "price": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "amount": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "set": {
+              "type": "function"
+            },
+            "default": {
+              "type": "function"
+            },
+            "transform": {
+              "type": "function"
+            }
+          }
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "example": "true"
+        },
+        "message": {
+          "type": "string",
+          "example": "error message"
+        },
+        "body": {
+          "type": "string",
+          "example": "error body"
+        },
+        "stack": {
+          "type": "string",
+          "example": "errorstack info"
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "Token": []
+    },
+    {
+      "Bearer": []
+    }
+  ]
+}
