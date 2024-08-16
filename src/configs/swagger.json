@@ -13,7 +13,7 @@
       "email": "ibr.seckin@gmail.com"
     }
   },
-  "host": "backend-stockapi-express.vercel.app",
+  "host": "stockapp-fullstack-render.onrender.com",
   "basePath": "/",
   "schemes": [
     "https",
