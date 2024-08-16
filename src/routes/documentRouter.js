@@ -10,9 +10,9 @@ const swaggerJson = require('../configs/swagger.json');
 router.all('/',(req,res)=>{
     res.json({
         documents: {
-            json: '/documents/json',
-            swagger:'/documents/swagger',
-            redoc:'/documents/redoc',
+            json: '/api/v1/documents/json',
+            swagger:'/api/v1/documents/swagger',
+            redoc:'/api/v1/documents/redoc',
         }
     })
 })
@@ -21,7 +21,7 @@ router.use('/json',(req,res)=>{
 })
 
 router.use('/swagger',swaggerUI.serve, swaggerUI.setup(swaggerJson,{swaggerOptions:{persistAuthorization:true}}));
-router.use('/redoc', redoc({specUrl:'/documents/json', title:'Stock api Redoc Api doc'}))
+router.use('/redoc', redoc({specUrl:'/api/v1/documents/json', title:'Stock api Redoc Api doc'}))
 
 
 
