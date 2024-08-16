@@ -27,7 +27,10 @@ const useStockRequest = () => {
 
             dispatch(fetchStockFail())
             console.log(error);
-            autoLogout(error,dispatch,navigate);
+            if(error?.response?.status === 403){
+                dispatch(logoutSuccess());
+                navigate('/')
+            }
             
         }
     }
@@ -47,7 +50,10 @@ const useStockRequest = () => {
 
             dispatch(fetchStockFail())
             console.log(error);
-            autoLogout(error,dispatch,navigate);
+            if(error?.response?.status === 403){
+                dispatch(logoutSuccess());
+                navigate('/')
+            }
         }
     }
     const postNewDataApi = async (path,firmData) => { 
@@ -65,7 +71,10 @@ const useStockRequest = () => {
             // toastErrorNotify("Error! The New Firm couldn't be added !");
             dispatch(fetchStockFail())
             console.log(error);
-            autoLogout(error,dispatch,navigate);
+            if(error?.response?.status === 403){
+                dispatch(logoutSuccess());
+                navigate('/')
+            }
         }
     }
     const putEditApi = async (path,id,firmData) => {
@@ -85,7 +94,10 @@ const useStockRequest = () => {
 
             dispatch(fetchStockFail())
             console.log(error);
-            autoLogout(error,dispatch,navigate);
+            if(error?.response?.status === 403){
+                dispatch(logoutSuccess());
+                navigate('/')
+            }
         }
     }
 
@@ -111,7 +123,10 @@ const useStockRequest = () => {
 
             dispatch(fetchStockFail())
             console.log(error);
-            autoLogout(error,dispatch,navigate);
+            if(error?.response?.status === 403){
+                dispatch(logoutSuccess());
+                navigate('/')
+            }
             
         }
     }
@@ -121,9 +136,3 @@ const useStockRequest = () => {
 export default useStockRequest
 
 
-const autoLogout = (error,dispatch,navigate) => {
-    if(error?.response?.status === 403){
-        dispatch(logoutSuccess());
-        navigate('/')
-    }
-}
