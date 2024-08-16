@@ -71,10 +71,15 @@ app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "./public", "index.html"));
 });
 
-//not found route
-app.use("*", (req, res) => {
+//not found route for backend
+app.use("/api/v1/*", (req, res) => {
   res.errorStatusCode = 400;
   throw new Error("route not found!");
+});
+
+//for refresh 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 /* ------------------------------ error handle ------------------------------ */
