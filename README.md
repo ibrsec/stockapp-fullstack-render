@@ -130,7 +130,7 @@ BACKEND:</br>
 
 <b>🛠 Middleware & Error Handling:</b> Added custom middleware for validation and consistent error handling.
 
-<b>🌐 Scalable Deployment:</b> Deployed on scalable platforms like Netlify and Vercel for high availability.
+<b>🌐 Scalable Deployment:</b> Deployed on Render platform for high availability.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
